@@ -30,3 +30,4 @@ class Unit(nn.Module):
     @property
     def out_features(self):
         return self.block.expanded_channels
+

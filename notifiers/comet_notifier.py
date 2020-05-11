@@ -103,7 +103,8 @@ class CometNotifier:
         self.save_checkpoint(epoch,
                              step,
                              model_state_dict,
-                             optim_state_dict)
+                             optim_state_dict,
+                             is_best=True)
 
     def epoch_completed(self,
                         epoch,
@@ -132,7 +133,6 @@ class CometNotifier:
             "state_dict": model_state_dict,
             "optim_dict": optim_state_dict
         }
-        print(state)
 
         torch.save(state, self.file_path)
 

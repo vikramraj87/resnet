@@ -21,6 +21,14 @@ class CometNotifier:
                         train_loss,
                         val_loss,
                         val_acc):
+        if len(step_cache) == 0:
+            return
+
+        self.step_cache = []
+        self.train_loss = []
+        self.val_loss = []
+        self.val_acc = []
+
         first_step = step_cache[0]
         epoch_str, _ = first_step.split("_")
         curr_epoch = int(epoch_str)
@@ -34,7 +42,7 @@ class CometNotifier:
             epoch = int(epoch_str)
             step = int(step_str)
 
-            if epoch != curr_epoch:
+            if epoch > curr_epoch:
                 self.experiment.log_epoch_end(curr_epoch)
                 curr_epoch = epoch
                 self.experiment.set_epoch(curr_epoch)

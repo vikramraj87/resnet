@@ -9,6 +9,7 @@ class Trainer:
         self.criterion = criterion
 
     def train_step(self, x, y):
+        self.model.train()
         self.optimizer.zero_grad()
 
         logits = self.model(x)
@@ -29,6 +30,7 @@ class Trainer:
 
     @no_grad()
     def test_step(self, x, y):
+        self.model.eval()
         logits = self.model(x)
         _, n_correct = self._accuracy(logits, y)
         return n_correct

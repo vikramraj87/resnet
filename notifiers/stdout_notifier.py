@@ -24,16 +24,18 @@ class StdoutNotifier:
         self.running_val_acc += accuracy
 
     def step_completed(self, step: int):
-        if step % self.report_interval != 0:
+        curr_progress = step % self.report_interval
+        if curr_progress != 0:
+            print(f"{curr_progress}/{self.report_interval}", end="\r")
             return
 
         train_loss = self.running_train_loss / self.report_interval
         val_loss = self.running_val_loss / self.report_interval
         val_acc = self.running_val_acc / self.report_interval
 
-        out = f"[{step:2}] Train loss: {train_loss}; "
-        out += f"Validation loss: {val_loss}; "
-        out += f"Validation accuracy: {val_acc}"
+        out = f"[{step:2}] Train loss: {train_loss:.2f}; "
+        out += f"Validation loss: {val_loss:.2f}; "
+        out += f"Validation accuracy: {val_acc:.2f}"
         print(out)
 
         self.reset()

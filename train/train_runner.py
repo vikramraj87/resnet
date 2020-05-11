@@ -46,10 +46,7 @@ class TrainRunner:
                              loss=val_loss,
                              accuracy=val_acc)
                 self._notify("step_completed",
-                             epoch=epoch,
-                             step=step,
-                             model_state_dict=self.trainer.model.state_dict(),
-                             optim_state_dict=self.trainer.optimizer.state_dict())
+                             step=step)
 
             model_state_dict = self.trainer.model.state_dict()
             optim_state_dict = self.trainer.optimizer.state_dict()

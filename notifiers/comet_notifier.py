@@ -8,8 +8,6 @@ class CometNotifier:
                  tmp_path):
         self.experiment = experiment
         self.file_path = tmp_path
-        self.best_loss = float("inf")
-        self.is_best = False
 
         self.step_cache = []
         self.train_loss = []
@@ -60,19 +58,12 @@ class CometNotifier:
                 self.experiment.log_metric("accuracy", v_a)
 
         epoch_str, step_str = self.step_cache[-1].split("_")
-        print(self.step_cache)
-        print(self.train_loss)
-        print(self.val_loss)
-        print(self.val_acc)
-        print(f"Resume training at epoch: {epoch_str} and step: {step_str}")
 
     def epoch_started(self, epoch):
         self.experiment.set_epoch(epoch)
 
     def step_started(self, step, epoch):
         self.experiment.set_step(step)
-        self.is_best = False
-
         self.step_cache.append(f"{epoch}_{step}")
 
     def train_step_completed(self, loss):
@@ -82,29 +73,12 @@ class CometNotifier:
         self.train_loss.append(loss)
 
     def validation_step_completed(self, loss, accuracy):
-        if loss < self.best_loss:
-            self.best_loss = loss
-            self.is_best = True
-
         with self.experiment.validate():
             self.experiment.log_metric("loss", loss)
             self.experiment.log_metric("accuracy", accuracy)
 
         self.val_loss.append(loss)
         self.val_acc.append(accuracy)
-
-    def step_completed(self,
-                       epoch: int,
-                       step: int,
-                       model_state_dict,
-                       optim_state_dict):
-        if not self.is_best:
-            return
-        self.save_checkpoint(epoch,
-                             step,
-                             model_state_dict,
-                             optim_state_dict,
-                             is_best=True)
 
     def epoch_completed(self,
                         epoch,

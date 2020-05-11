@@ -33,7 +33,7 @@ class StdoutNotifier:
         val_loss = self.running_val_loss / self.report_interval
         val_acc = self.running_val_acc / self.report_interval
 
-        out = f"[{step:2}] Train loss: {train_loss:.2f}; "
+        out = f"\r[{step:2}] Train loss: {train_loss:.2f}; "
         out += f"Validation loss: {val_loss:.2f}; "
         out += f"Validation accuracy: {val_acc:.2f}"
         print(out)

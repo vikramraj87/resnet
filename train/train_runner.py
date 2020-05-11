@@ -29,7 +29,8 @@ class TrainRunner:
             for (images, labels) in self.train_loader:
                 step += 1
                 self._notify("step_started",
-                             step=step)
+                             step=step,
+                             epoch=epoch)
 
                 x = images[:self.n_train].to(self.device)
                 y = labels[:self.n_train].to(self.device)
@@ -45,7 +46,10 @@ class TrainRunner:
                              loss=val_loss,
                              accuracy=val_acc)
                 self._notify("step_completed",
-                             step=step)
+                             epoch=epoch,
+                             step=step,
+                             model_state_dict=self.trainer.model.state_dict(),
+                             optim_state_dict=self.trainer.optimizer.state_dict())
 
             model_state_dict = self.trainer.model.state_dict()
             optim_state_dict = self.trainer.optimizer.state_dict()

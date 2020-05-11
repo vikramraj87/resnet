@@ -26,7 +26,7 @@ class StdoutNotifier:
     def step_completed(self, step: int):
         curr_progress = step % self.report_interval
         if curr_progress != 0:
-            print(f"{curr_progress}/{self.report_interval}", end="\r")
+            print(f"\r{curr_progress}/{self.report_interval}", end="")
             return
 
         train_loss = self.running_train_loss / self.report_interval
